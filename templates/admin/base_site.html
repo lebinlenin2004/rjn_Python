@@ -1,0 +1,97 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}RJN Foods Admin{% endblock %}
+
+{% block branding %}
+<div id="rjn-admin-brand">
+  <span class="rjn-admin-logo">RJN</span>
+  <div>
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">RJN Foods Admin</a></h1>
+    <p class="rjn-admin-subtitle">Products, customers, orders, and store operations</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  :root {
+    --rjn-navy: #071c37;
+    --rjn-gold: #b8862b;
+    --rjn-cream: #fffaf0;
+  }
+
+  #header {
+    background: var(--rjn-navy);
+    color: var(--rjn-cream);
+    min-height: 68px;
+  }
+
+  #branding h1,
+  #branding h1 a:link,
+  #branding h1 a:visited {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  #rjn-admin-brand {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+  }
+
+  .rjn-admin-logo {
+    align-items: center;
+    background: var(--rjn-gold);
+    border-radius: 12px;
+    color: #fff;
+    display: inline-flex;
+    font-weight: 900;
+    height: 42px;
+    justify-content: center;
+    letter-spacing: 0;
+    width: 42px;
+  }
+
+  .rjn-admin-subtitle {
+    color: #f6d77f;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 2px 0 0;
+  }
+
+  div.breadcrumbs {
+    background: #0b2a4d;
+  }
+
+  .module h2,
+  .module caption,
+  .inline-group h2 {
+    background: var(--rjn-navy);
+  }
+
+  a:link,
+  a:visited {
+    color: #93651c;
+  }
+
+  .button,
+  input[type=submit],
+  input[type=button],
+  .submit-row input,
+  a.button {
+    background: var(--rjn-gold);
+    border-radius: 8px;
+  }
+
+  .button.default,
+  input[type=submit].default,
+  .submit-row input.default {
+    background: var(--rjn-navy);
+  }
+
+  #content {
+    background: #fff;
+  }
+</style>
+{% endblock %}

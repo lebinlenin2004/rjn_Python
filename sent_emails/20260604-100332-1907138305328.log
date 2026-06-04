@@ -1,0 +1,11 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: RJN mail test
+From: RJN Foods <no-reply@rjn.local>
+To: admin.rjnstore@gmail.com
+Date: Thu, 04 Jun 2026 04:33:32 -0000
+Message-ID: <178054761275.20204.10549198805611633724@pooppi.hgu_lan>
+
+Mail service test from RJN backend. If you can read this file, Django email generation is working.
+-------------------------------------------------------------------------------
