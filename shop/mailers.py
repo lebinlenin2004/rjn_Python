@@ -2,12 +2,30 @@ from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
 from django.urls import reverse
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 EMAIL_VERIFICATION_SALT = 'rjn.email.verification'
 EMAIL_VERIFICATION_MAX_AGE = 60 * 60 * 24
 PASSWORD_RESET_SALT = 'rjn.password.reset'
 PASSWORD_RESET_MAX_AGE = 60 * 60
+
+
+def safe_send_mail(subject, message, recipient):
+    try:
+        return send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [recipient],
+            fail_silently=True,
+        )
+    except Exception:
+        logger.exception('Failed to send email to %s', recipient)
+        return 0
 
 
 def make_email_verification_token(user):
@@ -37,7 +55,7 @@ def send_verification_email(request, user):
         'This link expires in 24 hours.\n\n'
         'RJN Foods'
     )
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
+    return safe_send_mail(subject, message, user.email)
 
 
 def send_password_reset_email(user):
@@ -51,7 +69,7 @@ def send_password_reset_email(user):
         'This link expires in 1 hour. If you did not request this, you can ignore this email.\n\n'
         'RJN Foods'
     )
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
+    return safe_send_mail(subject, message, user.email)
 
 
 def send_order_confirmation_email(order):
@@ -71,7 +89,7 @@ def send_order_confirmation_email(order):
         f'Delivery address:\n{order.address}\n\n'
         'RJN Foods'
     )
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [order.email], fail_silently=False)
+    return safe_send_mail(subject, message, order.email)
 
 
 def send_order_status_email(order):
@@ -82,4 +100,4 @@ def send_order_status_email(order):
         f'Total: AED {order.total_amount}\n\n'
         'Thank you for shopping with RJN Foods.'
     )
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [order.email], fail_silently=False)
+    return safe_send_mail(subject, message, order.email)

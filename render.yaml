@@ -31,3 +31,5 @@ services:
         value: "True"
       - key: SECURE_HSTS_SECONDS
         value: "0"
+      - key: EMAIL_TIMEOUT
+        value: "5"
