@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput --clear
-    startCommand: python manage.py migrate && (python manage.py createsuperuser --noinput || true) && gunicorn rjn_backend.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python manage.py migrate && python manage.py ensure_superuser && gunicorn rjn_backend.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /health/
     envVars:
       - key: DEBUG
