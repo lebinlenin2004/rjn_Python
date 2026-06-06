@@ -17,6 +17,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if load_dotenv:
     load_dotenv(BASE_DIR / '.env')
 
+
+def env_value(name, default=''):
+    value = os.getenv(name, default)
+    if isinstance(value, str) and len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
+        return value[1:-1]
+    return value
+
+
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-only-rjn-secret')
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if host.strip()]
@@ -146,14 +154,16 @@ SUPABASE_URL = os.getenv('SUPABASE_URL', '')
 SUPABASE_SERVICE_ROLE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY', '')
 SUPABASE_STORAGE_BUCKET = os.getenv('SUPABASE_STORAGE_BUCKET', 'product-images')
 
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://127.0.0.1:5173')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'RJN Foods <no-reply@rjn.local>')
+FRONTEND_URL = env_value('FRONTEND_URL', 'http://127.0.0.1:5173')
+DEFAULT_FROM_EMAIL = env_value('DEFAULT_FROM_EMAIL', 'RJN Foods <no-reply@rjn.local>')
 
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = os.getenv('EMAIL_HOST', '')
+EMAIL_BACKEND = env_value('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = env_value('EMAIL_HOST', '')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = env_value('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = env_value('EMAIL_HOST_PASSWORD', '')
+if EMAIL_HOST == 'smtp.gmail.com':
+    EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD.replace(' ', '')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() == 'true'
 EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', '5'))
