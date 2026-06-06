@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput --clear
-    startCommand: python manage.py migrate && gunicorn rjn_backend.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python manage.py migrate && (python manage.py createsuperuser --noinput || true) && gunicorn rjn_backend.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /health/
     envVars:
       - key: DEBUG
@@ -15,6 +15,12 @@ services:
         generateValue: true
       - key: ALLOWED_HOSTS
         value: localhost,127.0.0.1
+      - key: DJANGO_SUPERUSER_USERNAME
+        sync: false
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false
       - key: CORS_ALLOWED_ORIGIN_REGEXES
         value: ^https://.*\.vercel\.app$
       - key: SECURE_SSL_REDIRECT
