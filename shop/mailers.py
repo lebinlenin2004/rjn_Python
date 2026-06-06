@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
-from django.urls import reverse
 import logging
 
 
@@ -21,7 +20,7 @@ def safe_send_mail(subject, message, recipient):
             message,
             settings.DEFAULT_FROM_EMAIL,
             [recipient],
-            fail_silently=True,
+            fail_silently=False,
         )
     except Exception:
         logger.exception('Failed to send email to %s', recipient)
